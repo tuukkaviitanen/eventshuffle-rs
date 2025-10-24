@@ -1,0 +1,12 @@
+FROM rust:1.90.0
+
+
+WORKDIR /app
+
+# Install binstall for faster cargo installs
+RUN curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
+
+# Install bacon for live reload
+RUN cargo binstall bacon
+
+CMD ["bacon", "--headless", "--watch", "./src/", "run-long"]

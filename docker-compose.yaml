@@ -1,0 +1,14 @@
+name: eventshuffle-rs
+services:
+  app: 
+    build: 
+      dockerfile: Dockerfile
+      context: .
+    volumes:
+      - ./:/app
+    environment:
+      - DATABASE_URL="postgres://postgres:password@database/postgres"
+  database:
+    image: postgres:15.14
+    environment:
+      POSTGRES_PASSWORD: password
