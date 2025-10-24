@@ -12,4 +12,6 @@ WORKDIR /usr/src/app
 
 COPY --from=build /app/target/release/eventshuffle-rs .
 
+EXPOSE 8080
+
 CMD [ "./eventshuffle-rs" ]

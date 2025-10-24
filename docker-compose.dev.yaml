@@ -4,13 +4,23 @@ services:
     build:
       dockerfile: Dockerfile.dev
       context: .
+    depends_on:
+      - database
+    ports:
+      - 8080:8080
     volumes:
       - ./:/app
+      # Target volume is for using a separate target directory than rust-analyzer
+      # If they both used the same one, they would block each other and force complete rebuilds after each change
+      - target-volume:/app/target 
     environment:
-      - DATABASE_URL="postgres://postgres:password@database/postgres"
+      - DATABASE_URL=postgres://postgres:password@database/postgres
   database:
     image: postgres:15.14
     ports:
       - 5432:5432
     environment:
       POSTGRES_PASSWORD: password
+
+volumes:
+  target-volume:

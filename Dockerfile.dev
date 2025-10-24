@@ -9,4 +9,6 @@ RUN curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/ca
 # Install bacon for live reload
 RUN cargo binstall bacon
 
+EXPOSE 8080
+
 CMD ["bacon", "--headless", "--watch", "./src/", "run-long"]
