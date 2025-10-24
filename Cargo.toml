@@ -3,3 +3,9 @@ name = "eventshuffle-rs"
 edition = "2024"
 
 [dependencies]
+sqlx = { version = "0.8.6", features = ["postgres", "macros", "runtime-tokio", "chrono", "uuid", "migrate"] }
+serde = { version = "1.0.228", features = ["derive"] }
+chrono = "0.4.42"
+tokio = {version ="1.48.0", features = ["full"]}
+poem = "3.1.12"
+poem-openapi = {version = "5.1.16", features = ["swagger-ui"]}
