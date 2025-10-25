@@ -23,6 +23,9 @@ async fn main() -> Result<(), std::io::Error> {
         .await
         .expect("Failed to connect to database");
 
+    println!("Running migrations to the database");
+    sqlx::migrate!("./migrations").run(&db_pool).await.expect("Failed to run database migrations");
+
     const PORT: &str = "8080";
 
     println!("Listening on port {PORT}");

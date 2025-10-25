@@ -1,5 +1,7 @@
 [tools]
 rust = "1.90.0"
+cargo-binstall = "1.15.6"
+"cargo:sqlx-cli" = "0.8.6"
 
 [env]
 DATABASE_URL = "postgres://postgres:password@localhost/postgres"
