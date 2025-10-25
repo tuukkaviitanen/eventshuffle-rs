@@ -1,24 +1,18 @@
 CREATE TABLE event (
-    "id" UUID NOT NULL,
-    "name" VARCHAR(255) NOT NULL,
-
-    CONSTRAINT "event_pkey" PRIMARY KEY ("id")
+    "id" UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    "name" VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE event_date (
-    "id" UUID NOT NULL,
+    "id" UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     "date" DATE NOT NULL,
-    "event_id" UUID NOT NULL,
-
-    CONSTRAINT "event_date_pkey" PRIMARY KEY ("id")
+    "event_id" UUID NOT NULL
 );
 
 CREATE TABLE event_date_vote (
-    "id" UUID NOT NULL,
+    "id" UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     "name" VARCHAR(255) NOT NULL,
-    "event_date_id" UUID NOT NULL,
-
-    CONSTRAINT "event_date_vote_pkey" PRIMARY KEY ("id")
+    "event_date_id" UUID NOT NULL
 );
 
 ALTER TABLE "event_date" ADD CONSTRAINT "event_date_event_id_fkey" FOREIGN KEY ("event_id") REFERENCES "event"("id") ON DELETE CASCADE ON UPDATE CASCADE;
