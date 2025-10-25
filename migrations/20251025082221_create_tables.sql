@@ -1,26 +1,26 @@
-CREATE TABLE "Event" (
-    "id" CHAR(36) NOT NULL,
+CREATE TABLE event (
+    "id" UUID NOT NULL,
     "name" VARCHAR(255) NOT NULL,
 
-    CONSTRAINT "Event_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "event_pkey" PRIMARY KEY ("id")
 );
 
-CREATE TABLE "EventDate" (
-    "id" CHAR(36) NOT NULL,
+CREATE TABLE event_date (
+    "id" UUID NOT NULL,
     "date" DATE NOT NULL,
-    "event_id" CHAR(36) NOT NULL,
+    "event_id" UUID NOT NULL,
 
-    CONSTRAINT "EventDate_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "event_date_pkey" PRIMARY KEY ("id")
 );
 
-CREATE TABLE "EventDateVote" (
-    "id" CHAR(36) NOT NULL,
+CREATE TABLE event_date_vote (
+    "id" UUID NOT NULL,
     "name" VARCHAR(255) NOT NULL,
-    "event_date_id" CHAR(36) NOT NULL,
+    "event_date_id" UUID NOT NULL,
 
-    CONSTRAINT "EventDateVote_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "event_date_vote_pkey" PRIMARY KEY ("id")
 );
 
-ALTER TABLE "EventDate" ADD CONSTRAINT "EventDate_event_id_fkey" FOREIGN KEY ("event_id") REFERENCES "Event"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "event_date" ADD CONSTRAINT "event_date_event_id_fkey" FOREIGN KEY ("event_id") REFERENCES "event"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
-ALTER TABLE "EventDateVote" ADD CONSTRAINT "EventDateVote_event_date_id_fkey" FOREIGN KEY ("event_date_id") REFERENCES "EventDate"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "event_date_vote" ADD CONSTRAINT "event_date_vote_event_date_id_fkey" FOREIGN KEY ("event_date_id") REFERENCES "event_date"("id") ON DELETE CASCADE ON UPDATE CASCADE;
