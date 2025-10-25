@@ -1,15 +1,34 @@
-use poem::{listener::TcpListener, EndpointExt, Route, Server};
-use poem_openapi::{OpenApi, OpenApiService, payload::PlainText};
+use poem::{listener::TcpListener, web::Data, EndpointExt, Route, Server, Result};
+use poem_openapi::{payload::Json, ApiResponse, Object, OpenApi, OpenApiService};
+
 
 struct Api;
 
+#[derive(ApiResponse)]
+enum GetEventsResponse {
+    #[oai(status = "200")]
+    Success(Json<Vec<Event>>),
+    #[oai(status = "400")]
+    BadRequest,
+    #[oai(status = "500")]
+    InternalError
+}
+
 #[OpenApi]
 impl Api {
-    /// Hello world
+    /// Get list of events
     #[oai(path = "/", method = "get")]
-    async fn index(&self) -> PlainText<&'static str> {
-        PlainText("Hello World")
+    async fn get_events(&self, conn: Data<&sqlx::postgres::PgPool>) -> Result<GetEventsResponse> {
+        let events = sqlx::query_as!(Event,
+            "SELECT id, name FROM event"
+        )
+        .fetch_all(conn.0)
+        .await
+        .map_err(|_| GetEventsResponse::InternalError)?;
+
+        Ok(GetEventsResponse::Success(Json(events)))
     }
+
 }
 
 #[tokio::main]
@@ -34,4 +53,17 @@ async fn main() -> Result<(), std::io::Error> {
     Server::new(TcpListener::bind(format!("0.0.0.0:{PORT}")))
         .run(app)
         .await
+}
+
+#[derive(sqlx::FromRow, Debug, serde::Serialize, Object)]
+struct Event {
+    id: String,
+    name: String,
+}
+
+#[derive(sqlx::FromRow, Debug, serde::Serialize, Object)]
+struct EventDate {
+    id: String,
+    name: String,
+    event_id: String
 }
